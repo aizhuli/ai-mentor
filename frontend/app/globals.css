@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+@theme {
+  /* Soviet constructivist palette */
+  --color-khaki: #C8B89A;
+  --color-crimson: #8B2635;
+  --color-crimson-dark: #6B1C28;
+  --color-slate: #3D5A6C;
+  --color-cream: #F5EDD8;
+  --color-sand: #D4C4A8;
+  --color-teal: #4A9BAD;
+  --color-teal-dark: #3A7A8A;
+
+  /* Typography */
+  --font-heading: var(--font-bebas);
+  --font-body: var(--font-space-grotesk);
+  --font-mono: var(--font-jetbrains);
+}
+
+/* Base resets for the design */
+* {
+  border-radius: 0 !important;
+}
+
+body {
+  background-color: #C8B89A;
+  color: #F5EDD8;
+  font-family: var(--font-body), sans-serif;
+}
+
+input,
+textarea,
+button {
+  font-family: var(--font-body), sans-serif;
+}
