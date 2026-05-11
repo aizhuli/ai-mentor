@@ -15,10 +15,21 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 
 builder.Services.AddScoped<TokenService>();
 
-var anthropicApiKey = builder.Configuration["Claude:ApiKey"]
-    ?? throw new InvalidOperationException("Claude:ApiKey is not configured. Set it in appsettings.json or the CLAUDE__APIKEY environment variable.");
-builder.Services.AddSingleton<IAnthropicClient>(new AnthropicClient(new ClientOptions { ApiKey = anthropicApiKey }));
-builder.Services.AddScoped<IMentorService, MentorService>();
+builder.Services.AddHttpClient();
+
+var aiProvider = builder.Configuration["AI:Provider"] ?? "claude";
+
+if (aiProvider.Equals("ollama", StringComparison.OrdinalIgnoreCase))
+{
+    builder.Services.AddScoped<IMentorService, OllamaMentorService>();
+}
+else
+{
+    var anthropicApiKey = builder.Configuration["Claude:ApiKey"]
+        ?? throw new InvalidOperationException("Claude:ApiKey is not configured.");
+    builder.Services.AddSingleton<IAnthropicClient>(new AnthropicClient(new ClientOptions { ApiKey = anthropicApiKey }));
+    builder.Services.AddScoped<IMentorService, MentorService>();
+}
 
 var jwtKey = builder.Configuration["Jwt:Key"]!;
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
